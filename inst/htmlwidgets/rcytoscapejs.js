@@ -180,8 +180,8 @@ HTMLWidgets.widget({
                     console.log(sourceName);
                     //console.log(targetName);
 
-                    var x = event.cyRenderedPosition.x;
-                    var y = event.cyRenderedPosition.y;
+                    //var x = event.cyRenderedPosition.x;
+                    //var y = event.cyRenderedPosition.y;
                     //var x = event.cyPosition.x;
                     //var y = event.cyPosition.y;
                     //console.log("x="+x+" Y="+y);
