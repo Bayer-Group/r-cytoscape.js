@@ -65,23 +65,24 @@ HTMLWidgets.widget({
                     'text-outline-color': 'data(color)',
                     'background-color': 'data(color)',
                     'width': 'data(width)',
-                    'height': 'data(height)'
+                    'height': 'data(height)',
+                    'font-size': '36px',
+                    'min-zoomed-font-size': '7px'
                 })
                 .selector('edge')
                 .css({
+                    
                     'line-color': 'data(color)',
-                    'source-arrow-color': 'data(color)',
-                    'target-arrow-color': 'data(color)',
-                    'source-arrow-shape': 'data(edgeSourceShape)',
-                    'target-arrow-shape': 'data(edgeTargetShape)',
-                    'width': 'data(width)'
+                    'width': 'data(width)',
+                    'curve-style': 'haystack',
+                    'haystack-radius': '0'
                 })
                 .selector(':selected')
                 .css({
-                    'background-color': '#FF00FF',
-                    'line-color': 'black',
-                    'target-arrow-color': 'black',
-                    'source-arrow-color': 'black'
+                    //'background-color': '#FF00FF',
+                    'border-style': 'solid',
+                    'border-width': '30px',
+                    'border-color': '#FFFF00'
                 })
                 .selector('.highlighted')
                 .css({
@@ -96,7 +97,7 @@ HTMLWidgets.widget({
                     'opacity': 0.25,
                     'text-opacity': 0
                 }),
-
+                
             elements: {
                 nodes: x.nodeEntries,
                 //nodes: [{ data: { id:'509209821', name:'509209821', color:'#888888', shape:'ellipse', href:''} }, { data: { id:'531376085', name:'531376085', color:'#888888', shape:'ellipse', href:''} }],
@@ -109,6 +110,7 @@ HTMLWidgets.widget({
                 ungrabifyWhileSimulating: true,
                 positions: positionMap
             },
+            
             ready: function () {
                 window.cy = this;
   
@@ -119,19 +121,29 @@ HTMLWidgets.widget({
                 cy.boxSelectionEnabled(true);
                 cy.userZoomingEnabled(true);
                 cy.on('tap', 'node', function (event) {
+                    /*
                     var nodeHighlighted = this.hasClass("highlighted");
                     console.log(nodeHighlighted);
-                    var nodes = this.closedNeighborhood().connectedNodes();
-                    //console.log(nodes);
                     console.log("A:" + el.id);
                     console.log("ID:" + this._private.data.id);
-                    Shiny.onInputChange("clickedNode", this._private.data.id);
                     console.log("break");
+                    
+                    //var nodes = this.closedNeighborhood().connectedNodes();
+                    var nodes = [];
+                    //console.log(nodes);
 
                     if (nodes.length === 0) {
-                        this.toggleClass("highlighted");
+                        if (nodeHighlighted) {
+                          console.log("Node is highlighted");
+                          this.toggleClass("highlighted", false);
+                        } else {
+                          console.log("Node is not highlighted");
+                          this.toggleClass("highlighted", true);
+                        }
+                        
                     }
-
+                    
+                    
                     if (nodeHighlighted) {
                         for (var i = 0; i < nodes.length; i++) {
                             if (nodes[i].hasClass("highlighted")) {
@@ -163,10 +175,33 @@ HTMLWidgets.widget({
                         for (var k in kk) keys.push(k);
                     }
                     console.log(keys);
+                    
                     Shiny.onInputChange("connectedNodes", keys);
+                    Shiny.onInputChange("clickedNode", 
+                                   cy.$(".highlighted, :selected").map(
+                                     function(node) {return node._private.data.id}));
+                    */               
                 });
                 
+                /*cy.on('select', function (event) {
+                  // var clicked_nodes = cy.$(".highlighted").map(function(node) {return node._private.data.id});
+                  //alert(JSON.stringify(Object.keys(event.cyTarget)));
+                  //alert(JSON.stringify(event.cyTarget.length));
+                  alert(JSON.stringify(event.cyTarget._private.data));
+                  
+                  //Shiny.onInputChange("clickedNode",  clicked_nodes);
+                })*/
+                window.old_clicked_nodes = [];
+                window.setInterval(function() {
+                  var clicked_nodes = cy.$(".highlighted, :selected").map(function(node) {return node._private.data.id});
+                  if (clicked_nodes != window.old_clicked_nodes) {
+                    Shiny.onInputChange("clickedNode",  clicked_nodes);
+                    window.old_clicked_nodes = clicked_nodes;
+                  }
+                }, 400.0);
+                
                 cy.on('tap', 'node', function (event) {
+                    
                     var node = this;
                     $(".qtip").remove();
                     //console.log(event);
@@ -206,8 +241,9 @@ HTMLWidgets.widget({
                         },
                         hide: {
                             fixed: true,
-                            event: false,
-                            inactive: 1000
+                            event: false
+                            //delay: 10000
+                            //inactive: 1000
                         },
                         style: {
                             classes: 'qtip-bootstrap',
@@ -218,6 +254,15 @@ HTMLWidgets.widget({
                         }
                     });
                 });
+                if (x.layout != "preset"){
+                  var node_positions = cy.$("node").map(
+                    function(node) {
+                        var position = node.position(); 
+                        position["name"] = node._private.data.short_name; 
+                        return position;
+                    });
+                  Shiny.onInputChange("nodeLayout", node_positions);
+                }
             }
         });
     }
