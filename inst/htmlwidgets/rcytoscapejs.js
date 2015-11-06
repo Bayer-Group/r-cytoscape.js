@@ -221,7 +221,10 @@ HTMLWidgets.widget({
                 window.old_clicked_nodes = [];
                 window.old_pan = [];
                 window.old_zoom = [];
-                window.setInterval(function() {
+                if (window.intervalId) {
+                  window.clearInterval(window.intervalId);
+                }
+                window.intervalId = window.setInterval(function() {
                   var clicked_nodes = cy.$(".highlighted, :selected").map(function(node) {return node._private.data.id});
                   if (clicked_nodes != window.old_clicked_nodes) {
                     Shiny.onInputChange("clickedNode",  clicked_nodes);
