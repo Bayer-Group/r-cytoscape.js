@@ -69,6 +69,6 @@ renderRcytoscapejs <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @param session the Shiny server session object
 #'
 #' @export
-selectNodesById <- function(nodeIds) {
+selectNodesById <- function(nodeIds, session) {
   session$sendCustomMessage(type = "filterCallback", nodeIds)
 }
