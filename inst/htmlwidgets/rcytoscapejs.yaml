@@ -41,3 +41,7 @@ dependencies:
     version: 4.0.3
     src: "htmlwidgets/lib"
     head: "<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>"
+  - name: custom-css
+    version: 0.0.1
+    src: "htmlwidgets/lib"
+    stylesheet: custom.css

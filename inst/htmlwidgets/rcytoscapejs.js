@@ -3,8 +3,11 @@ HTMLWidgets.widget({
     type: 'output',
 
     initialize: function (el, width, height) {
+        /*var loadingSpan = document.createElement('span');
+        loadingSpan.setAttribute("class", "fa fa-refresh fa-spin");
+        loadingSpan.setAttribute("id", "loading");
+        el.appendChild(loadingSpan);*/
         return {
-            // TODO: add instance fields as required
         }
     },
 
@@ -297,6 +300,8 @@ HTMLWidgets.widget({
                     });
                   Shiny.onInputChange("nodeLayout", node_positions);
                 }
+                // document.getElementById("loading").classList.add("loaded");
+                Shiny.onInputChange("cytoscapeReady", true);
             }
         });
     }
