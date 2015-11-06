@@ -118,6 +118,30 @@ HTMLWidgets.widget({
                   cy.panzoom(defaults);                  
                 }
 
+                Shiny.addCustomMessageHandler("filterCallback",
+                                               function(node_ids) {
+                                                 cy.$(".highlighted").toggleClass("highlighted");
+                                                 cy.$(":selected").trigger("unselect");
+                                                 if(!Array.isArray(node_ids)) {
+                                                   node_ids = [node_ids];
+                                                 }
+                                                 if(node_ids.length < 1) {
+                                                    return;
+                                                 }
+                                                 var selector_string = "#" + node_ids[0];
+                                                 for (var i = 1; i < node_ids.length; i++) {
+                                                   selector_string += ", #" + node_ids[i];
+                                                 }
+                                                 if(node_ids.length == 1) {
+                                                   cy.zoom(0.31);
+                                                   cy.center(cy.$(selector_string));
+                                                 }
+                                                 cy.$(":selected").unselect()
+                                                 cy.$(selector_string).select();
+                                                 Shiny.onInputChange("clickedNode", 
+                                                   cy.$(".highlighted, :selected").map(function(node) {return node._private.data.id}));
+                                               });
+
                 cy.boxSelectionEnabled(true);
                 cy.userZoomingEnabled(true);
                 cy.on('tap', 'node', function (event) {
@@ -192,11 +216,21 @@ HTMLWidgets.widget({
                   //Shiny.onInputChange("clickedNode",  clicked_nodes);
                 })*/
                 window.old_clicked_nodes = [];
+                window.old_pan = [];
+                window.old_zoom = [];
                 window.setInterval(function() {
                   var clicked_nodes = cy.$(".highlighted, :selected").map(function(node) {return node._private.data.id});
                   if (clicked_nodes != window.old_clicked_nodes) {
                     Shiny.onInputChange("clickedNode",  clicked_nodes);
                     window.old_clicked_nodes = clicked_nodes;
+                  }
+                  var pan = cy.pan();
+                  var zoom = cy.zoom();
+                  if (pan != window.old_pan || zoom != window.old_zoom) {
+                    Shiny.onInputChange("zoom",  zoom);
+                    Shiny.onInputChange("pan",  pan);
+                    window.old_pan = pan;
+                    window.old_zoom = zoom;
                   }
                 }, 400.0);
                 

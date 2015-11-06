@@ -61,3 +61,14 @@ renderRcytoscapejs <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   shinyRenderWidget(expr, rcytoscapejsOutput, env, quoted = TRUE)
 }
+
+
+#' Select nodes in a network by ID
+#'
+#' @param nodeIds a list-like of node ids to select
+#' @param session the Shiny server session object
+#'
+#' @export
+selectNodesById <- function(nodeIds) {
+  session$sendCustomMessage(type = "filterCallback", nodeIds)
+}
