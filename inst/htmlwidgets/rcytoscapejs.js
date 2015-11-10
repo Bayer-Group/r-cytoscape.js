@@ -7,6 +7,7 @@ HTMLWidgets.widget({
         loadingSpan.setAttribute("class", "fa fa-refresh fa-spin");
         loadingSpan.setAttribute("id", "loading");
         el.appendChild(loadingSpan);*/
+        Shiny.onInputChange("cytoscapeReady", null);
         return {
         }
     },
@@ -117,6 +118,7 @@ HTMLWidgets.widget({
             ready: function () {
                 window.cy = this;
   
+                cy.on("done", function () {Shiny.onInputChange("cytoscapeReady", true);});
                 if(x.showPanzoom) {
                   cy.panzoom(defaults);                  
                 }
@@ -238,6 +240,7 @@ HTMLWidgets.widget({
                     window.old_pan = pan;
                     window.old_zoom = zoom;
                   }
+                    
                 }, 400.0);
                 
                 cy.on('tap', 'node', function (event) {
