@@ -123,29 +123,31 @@ HTMLWidgets.widget({
                   cy.panzoom(defaults);                  
                 }
 
-                Shiny.addCustomMessageHandler("filterCallback",
-                                               function(node_ids) {
-                                                 cy.$(".highlighted").toggleClass("highlighted");
-                                                 cy.$(":selected").trigger("unselect");
-                                                 if(!Array.isArray(node_ids)) {
-                                                   node_ids = [node_ids];
-                                                 }
-                                                 if(node_ids.length < 1) {
-                                                    return;
-                                                 }
-                                                 var selector_string = "#" + node_ids[0];
-                                                 for (var i = 1; i < node_ids.length; i++) {
-                                                   selector_string += ", #" + node_ids[i];
-                                                 }
-                                                 if(node_ids.length == 1) {
-                                                   cy.zoom(0.31);
-                                                   cy.center(cy.$(selector_string));
-                                                 }
-                                                 cy.$(":selected").unselect()
-                                                 cy.$(selector_string).select();
-                                                 Shiny.onInputChange("clickedNode", 
-                                                   cy.$(".highlighted, :selected").map(function(node) {return node._private.data.id}));
-                                               });
+                try {
+                  Shiny.addCustomMessageHandler("filterCallback",
+                                                 function(node_ids) {
+                                                   cy.$(".highlighted").toggleClass("highlighted");
+                                                   cy.$(":selected").trigger("unselect");
+                                                   if(!Array.isArray(node_ids)) {
+                                                     node_ids = [node_ids];
+                                                   }
+                                                   if(node_ids.length < 1) {
+                                                      return;
+                                                   }
+                                                   var selector_string = "#" + node_ids[0];
+                                                   for (var i = 1; i < node_ids.length; i++) {
+                                                     selector_string += ", #" + node_ids[i];
+                                                   }
+                                                   if(node_ids.length == 1) {
+                                                     cy.zoom(0.31);
+                                                     cy.center(cy.$(selector_string));
+                                                   }
+                                                   cy.$(":selected").unselect()
+                                                   cy.$(selector_string).select();
+                                                   Shiny.onInputChange("clickedNode", 
+                                                     cy.$(".highlighted, :selected").map(function(node) {return node._private.data.id}));
+                                                 });
+                } catch(e) {}
 
                 cy.boxSelectionEnabled(true);
                 cy.userZoomingEnabled(true);
@@ -304,6 +306,7 @@ HTMLWidgets.widget({
                         position["name"] = node._private.data.short_name; 
                         return position;
                     });
+                  console.log("Updated node positions")
                   Shiny.onInputChange("nodeLayout", node_positions);
                 }
                 // document.getElementById("loading").classList.add("loaded");
