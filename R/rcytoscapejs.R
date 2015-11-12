@@ -25,13 +25,17 @@
 #' @import htmlwidgets
 #' @seealso \code{\link{createCytoscapeJsNetwork}}
 #' @export
-rcytoscapejs <- function(nodeEntries, edgeEntries, layout="cose", width=NULL, height=NULL, showPanzoom=TRUE) {
+rcytoscapejs <- function(nodeEntries, edgeEntries, layout="cose", 
+                         width=NULL, height=NULL, showPanzoom=TRUE,
+                         zoom=NULL, pan=NULL) {
   # forward options using x
   x = list()
   x$nodeEntries <- nodeEntries
   x$edgeEntries <- edgeEntries
   x$layout <- layout
   x$showPanzoom <- showPanzoom
+  x$zoom = zoom
+  x$pan = pan
 
   # create widget
   htmlwidgets::createWidget(
