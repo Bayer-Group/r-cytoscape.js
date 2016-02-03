@@ -27,7 +27,7 @@
 #' @export
 rcytoscapejs <- function(nodeEntries, edgeEntries, layout="cose", 
                          width=NULL, height=NULL, showPanzoom=TRUE,
-                         zoom=NULL, pan=NULL) {
+                         zoom=NULL, pan=NULL, textHalign="center") {
   # forward options using x
   x = list()
   x$nodeEntries <- nodeEntries
@@ -36,6 +36,7 @@ rcytoscapejs <- function(nodeEntries, edgeEntries, layout="cose",
   x$showPanzoom <- showPanzoom
   x$zoom = zoom
   x$pan = pan
+  x$textHalign = textHalign
 
   # create widget
   htmlwidgets::createWidget(

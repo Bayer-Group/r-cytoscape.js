@@ -66,6 +66,7 @@ HTMLWidgets.widget({
                     'color': 'data(nodeLabelColor)',
                     'content': 'data(name)',
                     'text-valign': 'center',
+                    'text-halign': x.textHalign,
                     'shape': 'data(shape)',
                     'text-outline-color': 'data(color)',
                     'background-color': 'data(color)',
