@@ -40,7 +40,6 @@ HTMLWidgets.widget({
           panInactiveArea: 8, // radius of inactive area in pan drag box
           panIndicatorMinOpacity: 0.5, // min opacity of pan indicator (the draggable nib); scales from this to 1.0
           autodisableForMobile: true, // disable the panzoom completely for mobile (since we don't really need it with gestures like pinch to zoom)
-          autolock: true,             // Assume we don't want users to be able to reposition nodes
       
           // icon class names
           sliderHandleIcon: 'fa fa-minus',
@@ -247,7 +246,7 @@ HTMLWidgets.widget({
                     
                 }, 400.0);
 
-                cy.autolock(true);
+                cy.autolock(x.autolock);
                 
                 cy.on('tap', 'node', function (event) {
                     
