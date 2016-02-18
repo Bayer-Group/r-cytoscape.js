@@ -7,7 +7,7 @@ HTMLWidgets.widget({
         loadingSpan.setAttribute("class", "fa fa-refresh fa-spin");
         loadingSpan.setAttribute("id", "loading");
         el.appendChild(loadingSpan);*/
-        Shiny.onInputChange("cytoscapeReady", null);
+        Shiny.onInputChange("cytoscapeReady", false);
         return {
         }
     },
@@ -49,6 +49,7 @@ HTMLWidgets.widget({
         });
         
         var positionMap = {};
+        Shiny.onInputChange("cytoscapeReady", false);
         
         //add position information to data for preset layout
         for (var i = 0; i < x.nodeEntries.length ; i++){
