@@ -140,10 +140,13 @@ HTMLWidgets.widget({
                                                    for (var i = 1; i < node_ids.length; i++) {
                                                      selector_string += ", #" + node_ids[i];
                                                    }
+                                                   /*
                                                    if(node_ids.length == 1) {
                                                      cy.zoom(0.31);
                                                      cy.center(cy.$(selector_string));
                                                    }
+                                                   */
+                                                   cy.fit(cy.$(selector_string))
                                                    cy.$(":selected").unselect()
                                                    cy.$(selector_string).select();
                                                    Shiny.onInputChange("clickedNode", 
